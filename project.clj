@@ -5,7 +5,7 @@
                  [org.clojure/tools.cli "0.4.2"]
                  [incanter "1.5.7"]
                  [redux "0.1.4"]
-                 [cider/cider-nrepl "0.15.0-SNAPSHOT"]]
+                 [cider/cider-nrepl "0.21.1"]]
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [criterium "0.4.4"]
                                   [ring/ring-spec "0.0.4"]]

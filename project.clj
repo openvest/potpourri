@@ -5,6 +5,7 @@
                  [org.clojure/tools.cli "0.4.2"]
                  [incanter "1.5.7"]
                  [redux "0.1.4"]
+                 [metosin/sieppari "0.0.0-alpha13"]
                  [cider/cider-nrepl "0.21.1"]]
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [criterium "0.4.4"]

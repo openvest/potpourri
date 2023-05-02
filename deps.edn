@@ -1,12 +1,9 @@
-; Copyright (c) Cognitect, Inc.
-;; All rights reserved.
-
 {:paths ["src" "resources"]
- :deps {com.cognitect/anomalies {:mvn/version "0.1.12"}
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        com.cognitect/anomalies {:mvn/version "0.1.12"}
         com.datomic/client-cloud {:mvn/version "1.0.119"}
         com.datomic/ion {:mvn/version "1.0.59"}
         com.datomic/dev-local {:mvn/version "1.0.243"}
-        org.clojure/clojure {:mvn/version "1.11.1"}
         org.clojure/data.json {:mvn/version "0.2.6"}
         io.pedestal/pedestal.service    {:mvn/version "0.5.7"
                                          :exclusions  [com.cognitect/transit-clj
@@ -22,9 +19,35 @@
         org.clojure/data.zip {:mvn/version "1.0.0"}
         ;;
         clj-commons/pomegranate {:mvn/version "1.2.23"}
+        ;; from the world of clerk
+        io.github.nextjournal/clerk {:git/sha "56bb0fa5e4f21d70f3ac763dc13ad1ab28164d8d"}
+        io.github.nextjournal/clerk-slideshow {:git/sha "f9fb86430ebf533bfc9d5cec5bf0a94ed07146f3"}
+        ;; some statistical routines
+        kixi/stats {:mvn/version "0.5.4"}
+        ;; 
+        clj-jgit/clj-jgit {:mvn/version "1.0.2" :exclusions [org.slf4j/slf4j-api]}
+        org.babashka/cli {:mvn/version "0.5.40"}
+        ;; silence log warnings
+        org.slf4j/slf4j-nop {:mvn/version "1.7.36"}
         }
+
  :aliases {:rebel {:extra-deps {com.bhauman/rebel-readline {:mvn/version "0.1.4"}
                                 clj-commons/pomegranate {:mvn/version "1.2.23"}}                 
-                   :main-opts  ["-m" "rebel-readline.main"]}}
+                   :main-opts  ["-m" "rebel-readline.main"]}
+           :nextjournal/clerk {:extra-paths ["datasets"]
+                               :exec-fn nextjournal.clerk/build!
+                               ;; notebooks to be built, accepts globs patterns
+                               :exec-args {:git/url "https://github.com/nextjournal/clerk-demo"
+                                           :paths ["index.md"
+                                                   "notebooks/slideshow.md"
+                                                   "notebooks/introduction.clj"
+                                                   "notebooks/data_science.clj"
+                                                   "notebooks/images.clj"
+                                                   "notebooks/logo.clj"
+                                                   "notebooks/semantic.clj"
+                                                   "notebooks/sicmutils.clj"
+                                                   "notebooks/rule_30.clj"
+                                                   "notebooks/zipper_with_scars.clj"]}
+                               :main-opts ["-m" "babashka.cli.exec"]}}}
  ;:mvn/repos {"datomic-cloud" {:url "s3://datomic-releases-1fc2183a/maven/releases"}}
- }
+

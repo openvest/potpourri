@@ -1,9 +1,13 @@
 .idea
 .lein*
 .cpcache
+.lsp
+.clerk
+.clj-kondo
 .nrepl-port
 .ipynb_checkpoints/
 target
-Untitled*.ipynb
 .rebel_readline_history
 .gorilla-port
+*.log
+Untitled*.ipynb

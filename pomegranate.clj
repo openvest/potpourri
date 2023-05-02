@@ -1,3 +1,11 @@
+(comment
+  ;; first include pomegranate...
+  ;; in project.clj:
+ [clj-commons/pomegranate "1.2.23"]
+  ;; in deps.edn:
+ clj-commons/pomegranate {:mvn/version "1.2.23"}
+ )
+
 (require '[cemerick.pomegranate :as pom]
          '[cemerick.pomegranate.aether :as aether])
 
@@ -7,18 +15,8 @@
                                            {"clojars" "https://clojars.org/repo"}))
 
 
-
-(require '[clojure.data.xml :refer :all :as x]
-         '[clojure.zip :as z])
-
 (require '[clojure.zip :as z]
          ;; these require extra deps
          '[clojure.data.xml :refer :all :as x]         
          '[clojure.data.zip.xml :refer [xml-> xml1->] :as zx])
 
-(defmacro def-let [bindings & body]
-  (assert (= 0 (mod (count bindings) 2)) "Must have an even number of bindings")
-  `(do ~@(->> bindings
-           (partition 2)
-           (map (fn [[s v]] (list 'def s v))))
-       ~@body))

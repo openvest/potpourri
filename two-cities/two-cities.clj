@@ -52,7 +52,7 @@
             lines (s/split (slurp filename) #"\n")
             pairs (map #(s/split % #",") lines)
             result (group-by first pairs)]
-nil)))
+nil))
 
 
 (time (let [f (line-seq (clojure.java.io/reader "../potpourri/word-pairs.txt"))]

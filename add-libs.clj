@@ -10,6 +10,7 @@
 (add-libs '{datascript/datascript {:mvn/version "1.4.2"}})
 (add-libs '{org.clj-commons/hickory {:mvn/version "0.7.3"}})
 (add-libs '{org.clojure/test.check {:mvn/version "1.1.1"}})
+(add-libs '{scicloj/tablecloth {:mvn/version "7.000-beta-27"}})
 
 
 (comment

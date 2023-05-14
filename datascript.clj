@@ -13,15 +13,17 @@
 ; # Create the empty database
 
 ; ## Schema
-; need more info on [schema usage](https://github.com/kristianmandrup/datascript-tutorial/blob/master/create_schema.md).
+; need more info on [schema usage](https://github.com/kristianmandrup/datascript-tutorial/blob/master/create_schema.md)
 ;;
 ;; Unlike XTDB, in Datascript, we quire some sechema setup. This identifies attributes like `:issuer` as references to other entities.
 ;; In RDF terms that means another subject, in OO terms it means another object.
 
 ^{::clerk/visibility {:result :hide}}
 (def schema {:issuer   {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}
-              :asset    {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}
-              :holdings {:db/valueType :db.type/ref :db/cardinality :db.cardinality/many}})
+             :asset    {:db/valueType :db.type/ref :db/cardinality :db.cardinality/one}
+             :holdings {:db/valueType :db.type/ref :db/cardinality :db.cardinality/many}
+             ;; TODO: find differences between :db.unique/identity and db.unique/value
+             :ticker {:db/unique :db.unique/identity}})
 ^{::clerk/visibility {:result :hide}}
 (def conn (d/create-conn schema))
 ;; from xtdb nextjournal notebook
@@ -71,14 +73,47 @@
      @conn)
 ;; now transpose so we can use it for a dataset
 (->> (d/q '[:find ?t ?q ?n
-       :where [?port :name "My Trading Portfolio"]
-              [?port :holdings ?h]
-              [?h :quantity ?q]
-              [?h :asset ?a]
-              [?a :ticker ?t]
-              [?a :issuer ?c]
-              [?c :name ?n]]
-     @conn)
- (apply map vector)
- (map vector [:ticker :quantity :name])
- (into {}))
+            :where [?port :name "My Trading Portfolio"]
+            [?port :holdings ?h]
+            [?h :quantity ?q]
+            [?h :asset ?a]
+            [?a :ticker ?t]
+            [?a :issuer ?c]
+            [?c :name ?n]]
+          @conn)
+     (apply map vector)
+     (map vector [:ticker :quantity :name])
+     (into {}))
+ ;; ## Entities
+(def security (d/entity @conn [:ticker "JPM"]))
+(-> security :issuer :name)
+
+security
+
+; # Add Pricing
+(d/db-with @conn
+           [{:db/id [:ticker "JPM"] :price 121.5}])
+
+(-> (d/entity @conn [:ticker "JPM"]) :price)
+
+(def db-1
+  (d/db-with @conn
+             [{:db/id [:ticker "JPM"] :price 121.5}
+              {:db/id [:ticker "IBM"] :price 132.5}
+              {:db/id [:ticker "F"] :price 21.5}]))
+
+
+(def db-2
+  (d/db-with @conn
+             [{:db/id [:ticker "JPM"] :price 125.8}]))
+
+(->>  [:ticker "JPM"] (d/entity db-1) :price)
+(->>  [:ticker "JPM"] (d/entity db-2) :price)
+
+
+(def db-3
+  (:db-after
+   (d/with @conn
+           [{:db/id [:ticker "JPM"] :price 135.1}])))
+
+(->> (d/entity db-3 [:ticker "IBM"])  :price)

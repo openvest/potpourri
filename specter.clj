@@ -12,8 +12,8 @@
                           [(if-path map? ALL INDEXED-VALS)
                            (if-path [LAST (pred= v)]
                              FIRST
-                             [(collect-one FIRST) LAST coll? RECUR]
-                             )])]
+                             [(collect-one FIRST) LAST coll? RECUR])])]
+
     (let [ret (select-first p data)]
       (if (or (nil? ret) (vector? ret)) ret [ret]))))
 
@@ -21,15 +21,18 @@
 
 
 ;; From [StackOverflow question](https://stackoverflow.com/questions/76200172/paths-from-root-to-leaf-of-a-binary-tree-in-clojure)
-(def input {:value 10,
-  :left {:value 8, :left {:value 3}, :right {:value 5}},
-  :right {:value 2, :left {:value 1}}})
+(def input
+  {:value 10,
+   :left {:value 8, :left {:value 3}, :right {:value 5}},
+   :right {:value 2, :left {:value 1}}})
 
 
 (def leaf-paths
   (recursive-path [] RECUR
       (if-path #(some % [:left :right])
         [(collect-one :value) (submap [:left :right]) MAP-VALS RECUR]
+        ;; also works:
+        ;; [(collect-one :value) (multi-path :left :right) some? RECUR]
         :value)))
 
 (select leaf-paths input)

@@ -32,7 +32,10 @@
         }
 
  :aliases {:rebel {:extra-deps {com.bhauman/rebel-readline {:mvn/version "0.1.4"}
-                                clj-commons/pomegranate {:mvn/version "1.2.23"}}                 
+                                clj-commons/pomegranate {:mvn/version "1.2.23"}
+                                org.clojure/tools.deps.alpha ; add-lib3 branch
+                                    {:git/url "https://github.com/clojure/tools.deps.alpha"
+                                     :sha "e4fb92eef724fa39e29b39cc2b1a850567d490dd"}}
                    :main-opts  ["-m" "rebel-readline.main"]}
            :nextjournal/clerk {:extra-paths ["datasets"]
                                :exec-fn nextjournal.clerk/build!

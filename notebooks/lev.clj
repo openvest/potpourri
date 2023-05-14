@@ -99,9 +99,9 @@
 
 (defn levd [a b]
   (let [a1 (first a) b1 (first b)]
-  (cond
-    (nil? a1) (count b)
-    (nil? b1) (count a)
-    (= a1 b1) (levd (rest a) (rest b))
-  :else
-    (inc (min (levd (rest a) (rest b)) (levd a (rest b)) (levd (rest a) b))))))
+    (cond
+      (nil? a1) (count b)
+      (nil? b1) (count a)
+      (= a1 b1) (levd (rest a) (rest b))
+      :else
+      (inc (min (levd (rest a) (rest b)) (levd a (rest b)) (levd (rest a) b))))))

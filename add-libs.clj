@@ -7,10 +7,11 @@
 
 (require '[clojure.tools.deps.alpha.repl :refer [add-libs]])
 
+(add-libs '{com.datomic/client-cloud} {:mvn/version "1.0.125"})
 (add-libs '{datascript/datascript {:mvn/version "1.4.2"}})
 (add-libs '{org.clj-commons/hickory {:mvn/version "0.7.3"}})
 (add-libs '{org.clojure/test.check {:mvn/version "1.1.1"}})
-(add-libs '{scicloj/tablecloth {:mvn/version "7.000-beta-27"}})
+(add-libs '{scicloj/tablecloth {:mvn/version "7.029.1"}})
 
 
 (comment

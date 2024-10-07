@@ -135,12 +135,11 @@
       :body
       (json/parse-string true)
       :AuthenticationResult
-                                        ; the token and login endpoints have different key names so lets fix that up
+      ;; the token and login endpoints have different key names so lets fix that up
+      (dissoc :ExpiresIn :TokenType)  ;; unused
       (clojure.set/rename-keys {:RefreshToken :refresh_token
                                 :AccessToken :access_token
-                                :IdToken :id_token
-                                :TokenType :token_type
-                                :ExpiresIn :expires_in})))
+                                :IdToken :id_token})))
 
 (defn unsign-cognito [token]
   (apply jwt/unsign token (public-key-from-token token)))
